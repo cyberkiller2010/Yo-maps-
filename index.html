@@ -929,6 +929,336 @@
             }
         }
 
+        /* ===== FEATURES: COUNTDOWN ===== */
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .countdown-timer .cd-item {
+            background: var(--card-bg);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-align: center;
+            min-width: 70px;
+        }
+        .countdown-timer .cd-item .cd-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--purple);
+            display: block;
+        }
+        .countdown-timer .cd-item .cd-label {
+            font-size: 0.7rem;
+            color: var(--placeholder);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== FEATURES: MERCH ===== */
+        .merch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .merch-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 1rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .merch-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--purple);
+        }
+        .merch-item .merch-icon {
+            font-size: 2.5rem;
+            color: var(--purple);
+            margin-bottom: 0.3rem;
+        }
+        .merch-item .merch-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .merch-item .merch-price {
+            color: var(--purple);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .merch-item .btn-buy {
+            background: var(--purple);
+            border: none;
+            color: #fff;
+            padding: 0.3rem 1.2rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+            transition: var(--transition);
+        }
+        .merch-item .btn-buy:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== FEATURES: TOUR ===== */
+        .tour-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .tour-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .tour-item .tour-info {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .tour-item .tour-info i {
+            color: var(--purple);
+            width: 20px;
+        }
+        .tour-item .btn-ticket {
+            background: var(--purple);
+            border: none;
+            color: #fff;
+            padding: 0.3rem 1.2rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: var(--transition);
+        }
+        .tour-item .btn-ticket:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== FEATURES: FAN WALL ===== */
+        .fan-wall {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 0.5rem;
+        }
+        .fan-item {
+            background: var(--card-bg);
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .fan-item .fan-name {
+            font-weight: 600;
+            color: var(--purple);
+        }
+        .fan-item .fan-stars {
+            color: #f1c40f;
+            letter-spacing: 2px;
+        }
+
+        /* ===== FEATURES: PRESS KIT ===== */
+        .press-kit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .press-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.8rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .press-item:hover {
+            border-color: var(--purple);
+            transform: scale(1.02);
+        }
+        .press-item i {
+            font-size: 2rem;
+            color: var(--purple);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        .press-item .press-name {
+            font-size: 0.8rem;
+        }
+
+        /* ===== FEATURES: LIGHTBOX ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .lightbox.show {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+        }
+        .lightbox .lb-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .lightbox .lb-close:hover {
+            color: var(--purple);
+        }
+
+        /* ===== FEATURES: PLAYLIST PLAYER ===== */
+        .playlist-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 0.8rem 2rem;
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .playlist-player.show {
+            display: flex;
+        }
+        .playlist-player .pp-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .playlist-player .pp-info .pp-cover {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: var(--card-bg);
+        }
+        .playlist-player .pp-info .pp-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .playlist-player .pp-info .pp-artist {
+            font-size: 0.75rem;
+            color: var(--placeholder);
+        }
+        .playlist-player .pp-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .playlist-player .pp-controls button {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--radius);
+        }
+        .playlist-player .pp-controls button:hover {
+            background: var(--purple);
+            color: #fff;
+        }
+        .playlist-player .pp-controls .pp-play-btn {
+            font-size: 1.8rem;
+            color: var(--purple);
+        }
+        .playlist-player .pp-controls .pp-play-btn:hover {
+            color: var(--purple-light);
+        }
+
+        /* ===== FEATURES: SOCIAL SHARE ===== */
+        .share-buttons {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .share-buttons button {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.3rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        .share-buttons button:hover {
+            background: var(--purple);
+            color: #fff;
+        }
+        .share-buttons button i {
+            font-size: 1rem;
+        }
+        .share-buttons button:hover i {
+            color: #fff;
+        }
+
+        /* ===== FEATURES: ANALYTICS ===== */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .analytics-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+        }
+        .analytics-item .analytics-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--purple);
+            display: block;
+        }
+        .analytics-item .analytics-label {
+            font-size: 0.8rem;
+            color: var(--placeholder);
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             text-align: center;
@@ -973,6 +1303,32 @@
             }
             .modal-content {
                 padding: 1.8rem;
+            }
+            .countdown-timer {
+                gap: 0.8rem;
+            }
+            .countdown-timer .cd-item {
+                padding: 0.5rem 1rem;
+                min-width: 50px;
+            }
+            .countdown-timer .cd-item .cd-number {
+                font-size: 1.5rem;
+            }
+            .tour-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .playlist-player {
+                padding: 0.6rem 1rem;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .playlist-player .pp-info {
+                justify-content: center;
+            }
+            .playlist-player .pp-controls {
+                justify-content: center;
             }
         }
     </style>
@@ -1025,6 +1381,8 @@
             <a data-tab="audio"><i class="fas fa-music"></i> Audio</a>
             <a data-tab="images"><i class="fas fa-images"></i> Images</a>
             <a data-tab="albums"><i class="fas fa-compact-disc"></i> Albums</a>
+            <a data-tab="tour"><i class="fas fa-map-pin"></i> Tour</a>
+            <a data-tab="merch"><i class="fas fa-shopping-bag"></i> Merch</a>
         </nav>
 
         <!-- ===== HOME SECTION ===== -->
@@ -1064,6 +1422,42 @@
                             <div class="loading"><i class="fas fa-spinner"></i> Loading posts...</div>
                         </div>
                     </div>
+
+                    <!-- Fan Wall -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-users"></i> Fan Wall</h3>
+                        <div class="fan-wall" id="fanWall">
+                            <div class="fan-item"><span class="fan-name">John D.</span> <span class="fan-stars">★★★★★</span> "Yo Maps is the best!"</div>
+                            <div class="fan-item"><span class="fan-name">Sarah K.</span> <span class="fan-stars">★★★★★</span> "His music changed my life"</div>
+                            <div class="fan-item"><span class="fan-name">Mike T.</span> <span class="fan-stars">★★★★★</span> "Finally is my anthem"</div>
+                            <div class="fan-item"><span class="fan-name">Grace M.</span> <span class="fan-stars">★★★★★</span> "Can't stop listening!"</div>
+                            <div class="fan-item"><span class="fan-name">David O.</span> <span class="fan-stars">★★★★★</span> "Zambia's finest!"</div>
+                        </div>
+                        <div style="margin-top:0.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+                            <input type="text" id="fanInput" placeholder="Write a review..." style="flex:1; padding:0.5rem 1rem; border-radius:var(--radius); border:1px solid var(--border); background:var(--input-bg); color:var(--text); outline:none; min-width:150px;">
+                            <select id="fanStars" style="padding:0.5rem 1rem; border-radius:var(--radius); border:1px solid var(--border); background:var(--input-bg); color:var(--text); outline:none;">
+                                <option value="★★★★★">5 Stars</option>
+                                <option value="★★★★">4 Stars</option>
+                                <option value="★★★">3 Stars</option>
+                                <option value="★★">2 Stars</option>
+                                <option value="★">1 Star</option>
+                            </select>
+                            <button onclick="addFanReview()" style="background:var(--purple); border:none; color:#fff; padding:0.5rem 1.2rem; border-radius:var(--radius); cursor:pointer;">Post</button>
+                        </div>
+                    </div>
+
+                    <!-- Share Buttons -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-share-alt"></i> Share Yo Maps</h3>
+                        <div class="share-buttons">
+                            <button onclick="shareOn('whatsapp')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                            <button onclick="shareOn('twitter')"><i class="fab fa-x-twitter"></i> X</button>
+                            <button onclick="shareOn('facebook')"><i class="fab fa-facebook"></i> Facebook</button>
+                            <button onclick="shareOn('linkedin')"><i class="fab fa-linkedin"></i> LinkedIn</button>
+                            <button onclick="shareOn('email')"><i class="fas fa-envelope"></i> Email</button>
+                            <button onclick="copyLink()"><i class="fas fa-link"></i> Copy Link</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div>
@@ -1088,6 +1482,28 @@
                         </div>
                     </div>
 
+                    <!-- Countdown Timer -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-clock"></i> New Album: "Vibes on Vibes"</h3>
+                        <div class="countdown-timer" id="countdownTimer">
+                            <div class="cd-item"><span class="cd-number" id="cdDays">00</span><span class="cd-label">Days</span></div>
+                            <div class="cd-item"><span class="cd-number" id="cdHours">00</span><span class="cd-label">Hours</span></div>
+                            <div class="cd-item"><span class="cd-number" id="cdMinutes">00</span><span class="cd-label">Mins</span></div>
+                            <div class="cd-item"><span class="cd-number" id="cdSeconds">00</span><span class="cd-label">Secs</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Press Kit -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-folder-open"></i> Press Kit</h3>
+                        <div class="press-kit-grid">
+                            <div class="press-item" onclick="downloadPressKit('photos')"><i class="fas fa-images"></i><span class="press-name">Photos</span></div>
+                            <div class="press-item" onclick="downloadPressKit('bio')"><i class="fas fa-file-alt"></i><span class="press-name">Bio</span></div>
+                            <div class="press-item" onclick="downloadPressKit('album-art')"><i class="fas fa-compact-disc"></i><span class="press-name">Album Art</span></div>
+                            <div class="press-item" onclick="downloadPressKit('press-release')"><i class="fas fa-newspaper"></i><span class="press-name">Press Release</span></div>
+                        </div>
+                    </div>
+
                     <!-- Contact -->
                     <div class="home-card">
                         <h3><i class="fas fa-phone"></i> Contact</h3>
@@ -1096,6 +1512,68 @@
                             <div class="contact-item"><i class="fas fa-phone"></i> +260 97 123 4567</div>
                         </div>
                         <button class="save-btn" id="saveContactBtn" onclick="saveEditable('contactInfo', 'contact')">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TOUR SECTION ===== -->
+        <div id="tourSection" style="display:none;">
+            <div class="home-card">
+                <h3><i class="fas fa-map-pin"></i> Tour Dates</h3>
+                <div class="tour-list" id="tourList">
+                    <div class="tour-item">
+                        <div class="tour-info"><i class="fas fa-location-dot"></i> Lusaka, Zambia</div>
+                        <div><i class="fas fa-calendar"></i> Dec 12, 2026 <button class="btn-ticket" onclick="buyTicket('Lusaka')">Get Tickets</button></div>
+                    </div>
+                    <div class="tour-item">
+                        <div class="tour-info"><i class="fas fa-location-dot"></i> Johannesburg, SA</div>
+                        <div><i class="fas fa-calendar"></i> Dec 18, 2026 <button class="btn-ticket" onclick="buyTicket('Johannesburg')">Get Tickets</button></div>
+                    </div>
+                    <div class="tour-item">
+                        <div class="tour-info"><i class="fas fa-location-dot"></i> Lagos, Nigeria</div>
+                        <div><i class="fas fa-calendar"></i> Dec 25, 2026 <button class="btn-ticket" onclick="buyTicket('Lagos')">Get Tickets</button></div>
+                    </div>
+                    <div class="tour-item">
+                        <div class="tour-info"><i class="fas fa-location-dot"></i> Nairobi, Kenya</div>
+                        <div><i class="fas fa-calendar"></i> Jan 8, 2027 <button class="btn-ticket" onclick="buyTicket('Nairobi')">Get Tickets</button></div>
+                    </div>
+                    <div class="tour-item">
+                        <div class="tour-info"><i class="fas fa-location-dot"></i> Accra, Ghana</div>
+                        <div><i class="fas fa-calendar"></i> Jan 15, 2027 <button class="btn-ticket" onclick="buyTicket('Accra')">Get Tickets</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MERCH SECTION ===== -->
+        <div id="merchSection" style="display:none;">
+            <div class="home-card">
+                <h3><i class="fas fa-shopping-bag"></i> Yo Maps Merch</h3>
+                <div class="merch-grid" id="merchGrid">
+                    <div class="merch-item">
+                        <div class="merch-icon"><i class="fas fa-tshirt"></i></div>
+                        <div class="merch-name">Logo T-Shirt</div>
+                        <div class="merch-price">$25.00</div>
+                        <button class="btn-buy" onclick="buyMerch('Logo T-Shirt', 25)">Add to Cart</button>
+                    </div>
+                    <div class="merch-item">
+                        <div class="merch-icon"><i class="fas fa-hoodie"></i></div>
+                        <div class="merch-name">Album Hoodie</div>
+                        <div class="merch-price">$45.00</div>
+                        <button class="btn-buy" onclick="buyMerch('Album Hoodie', 45)">Add to Cart</button>
+                    </div>
+                    <div class="merch-item">
+                        <div class="merch-icon"><i class="fas fa-hat-cowboy"></i></div>
+                        <div class="merch-name">Branded Hat</div>
+                        <div class="merch-price">$15.00</div>
+                        <button class="btn-buy" onclick="buyMerch('Branded Hat', 15)">Add to Cart</button>
+                    </div>
+                    <div class="merch-item">
+                        <div class="merch-icon"><i class="fas fa-download"></i></div>
+                        <div class="merch-name">Digital Album</div>
+                        <div class="merch-price">$9.99</div>
+                        <button class="btn-buy" onclick="buyMerch('Digital Album', 9.99)">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -1115,6 +1593,16 @@
                 <div class="admin-item" onclick="document.getElementById('avatarFileInput').click()"><i class="fas fa-image"></i> Change Avatar</div>
                 <div class="admin-item" onclick="changePassword()"><i class="fas fa-key"></i> Change Password</div>
                 <div class="admin-item" onclick="showToast('info', 'Edit mode enabled. Click any text to edit, then click Save.')"><i class="fas fa-edit"></i> Edit Mode</div>
+            </div>
+            <!-- Analytics -->
+            <div style="margin-top:1rem; border-top:1px solid var(--border); padding-top:1rem;">
+                <h4><i class="fas fa-chart-bar"></i> Analytics</h4>
+                <div class="analytics-grid" id="analyticsGrid">
+                    <div class="analytics-item"><span class="analytics-number" id="totalViews">0</span><span class="analytics-label">Total Views</span></div>
+                    <div class="analytics-item"><span class="analytics-number" id="songPlays">0</span><span class="analytics-label">Song Plays</span></div>
+                    <div class="analytics-item"><span class="analytics-number" id="videoViews">0</span><span class="analytics-label">Video Views</span></div>
+                    <div class="analytics-item"><span class="analytics-number" id="postEngagement">0</span><span class="analytics-label">Post Engagements</span></div>
+                </div>
             </div>
         </div>
 
@@ -1174,54 +1662,57 @@
                 <span class="close-modal" onclick="closeLogin()"><i class="fas fa-times"></i></span>
                 <h2><i class="fas fa-lock"></i> Artist Login</h2>
 
-                <!-- Login Form -->
                 <div id="loginForm">
                     <input type="email" id="loginEmail" placeholder="Email" value="mundiamartin293@gmail.com">
                     <input type="password" id="loginPassword" placeholder="Password" value="Admin123!">
                     <button class="upload-btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
-
                     <div style="margin-top: 0.8rem; text-align: center; display: flex; flex-direction: column; gap: 0.4rem;">
-                        <a href="#" onclick="showForgotPassword()" style="color: var(--purple); font-size: 0.85rem;">
-                            <i class="fas fa-key"></i> Forgot password?
-                        </a>
-                        <a href="#" onclick="switchToSignup()" style="color: var(--purple); font-size: 0.85rem; display:none;" id="signupLink">
-                            <i class="fas fa-user-plus"></i> Don't have an account? Sign up
-                        </a>
+                        <a href="#" onclick="showForgotPassword()" style="color: var(--purple); font-size: 0.85rem;"><i class="fas fa-key"></i> Forgot password?</a>
+                        <a href="#" onclick="switchToSignup()" style="color: var(--purple); font-size: 0.85rem; display:none;" id="signupLink"><i class="fas fa-user-plus"></i> Don't have an account? Sign up</a>
                     </div>
                 </div>
 
-                <!-- Forgot Password Form -->
                 <div id="forgotPasswordForm" style="display: none; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-                    <p style="color: var(--placeholder); font-size: 0.85rem; margin-bottom: 0.8rem;">
-                        Enter your email and we'll send you a password reset link.
-                    </p>
+                    <p style="color: var(--placeholder); font-size: 0.85rem; margin-bottom: 0.8rem;">Enter your email and we'll send you a password reset link.</p>
                     <input type="email" id="resetEmail" placeholder="Enter your email" value="mundiamartin293@gmail.com">
-                    <button class="upload-btn" onclick="resetPassword()" style="background: var(--purple);">
-                        <i class="fas fa-paper-plane"></i> Send Reset Link
-                    </button>
+                    <button class="upload-btn" onclick="resetPassword()" style="background: var(--purple);"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
                     <div style="margin-top: 0.5rem; text-align: center;">
-                        <a href="#" onclick="switchToLogin()" style="color: var(--purple); font-size: 0.8rem;">
-                            <i class="fas fa-arrow-left"></i> Back to Login
-                        </a>
+                        <a href="#" onclick="switchToLogin()" style="color: var(--purple); font-size: 0.8rem;"><i class="fas fa-arrow-left"></i> Back to Login</a>
                     </div>
                 </div>
 
-                <!-- Signup Form -->
                 <div id="signupForm" style="display: none; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
                     <input type="email" id="signupEmail" placeholder="Email" value="mundiamartin293@gmail.com">
                     <input type="password" id="signupPassword" placeholder="Password" value="Admin123!">
-                    <button class="upload-btn" onclick="signup()" style="background: var(--success);">
-                        <i class="fas fa-user-plus"></i> Sign Up
-                    </button>
+                    <button class="upload-btn" onclick="signup()" style="background: var(--success);"><i class="fas fa-user-plus"></i> Sign Up</button>
                     <div style="margin-top: 0.5rem; text-align: center;">
-                        <a href="#" onclick="switchToLogin()" style="color: var(--purple); font-size: 0.8rem;">
-                            <i class="fas fa-arrow-left"></i> Back to Login
-                        </a>
+                        <a href="#" onclick="switchToLogin()" style="color: var(--purple); font-size: 0.8rem;"><i class="fas fa-arrow-left"></i> Back to Login</a>
                     </div>
-                    <p style="margin-top:0.5rem; text-align:center; font-size:0.7rem; color:var(--placeholder);">
-                        Note: Sign-ups are only available for Yo Maps (first user).
-                    </p>
+                    <p style="margin-top:0.5rem; text-align:center; font-size:0.7rem; color:var(--placeholder);">Note: Sign-ups are only available for Yo Maps (first user).</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- ===== LIGHTBOX ===== -->
+        <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+            <span class="lb-close" onclick="closeLightbox()"><i class="fas fa-times"></i></span>
+            <img id="lightboxImg" src="" alt="Enlarged view">
+        </div>
+
+        <!-- ===== PLAYLIST PLAYER ===== -->
+        <div class="playlist-player" id="playlistPlayer">
+            <div class="pp-info">
+                <img class="pp-cover" id="ppCover" src="" alt="Cover">
+                <div>
+                    <div class="pp-title" id="ppTitle">Now Playing</div>
+                    <div class="pp-artist" id="ppArtist">Yo Maps</div>
+                </div>
+            </div>
+            <div class="pp-controls">
+                <button onclick="playlistPrev()"><i class="fas fa-step-backward"></i></button>
+                <button class="pp-play-btn" id="ppPlayBtn" onclick="togglePlay()"><i class="fas fa-play-circle"></i></button>
+                <button onclick="playlistNext()"><i class="fas fa-step-forward"></i></button>
+                <button onclick="closePlaylist()"><i class="fas fa-times"></i></button>
             </div>
         </div>
 
@@ -1244,7 +1735,6 @@
         const ARTIST_EMAIL = 'mundiamartin293@gmail.com';
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-        let signupDisabled = false;
 
         // ============================================================
         // STATE
@@ -1257,6 +1747,10 @@
         let selectedAlbumCover = null;
         let postFileData = null;
         let postFileType = null;
+        let playlist = [];
+        let playlistIndex = 0;
+        let audioPlayer = null;
+        let isPlaying = false;
 
         // ============================================================
         // TOAST NOTIFICATIONS
@@ -1283,12 +1777,10 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            // 🔒 BLOCK: Only allow artist email to login
             if (email !== ARTIST_EMAIL) {
                 showToast('error', 'Only the artist account can login.');
                 return;
             }
-
             if (!email || !password) {
                 showToast('error', 'Please enter both email and password.');
                 return;
@@ -1311,12 +1803,10 @@
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
 
-            // 🔒 BLOCK: Only allow artist email to sign up
             if (email !== ARTIST_EMAIL) {
                 showToast('error', 'Only the artist account can sign up.');
                 return;
             }
-
             if (!email || !password) {
                 showToast('error', 'Please enter both email and password.');
                 return;
@@ -1326,7 +1816,6 @@
                 return;
             }
 
-            // Check if user already exists
             const { data: existingUsers } = await supabase.from('profiles').select('id').limit(1);
             if (existingUsers && existingUsers.length > 0) {
                 showToast('error', 'Sign-ups are disabled. Only Yo Maps can have an account.');
@@ -1336,9 +1825,7 @@
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
-                options: {
-                    data: { is_artist: true }
-                }
+                options: { data: { is_artist: true } }
             });
 
             if (error) {
@@ -1348,7 +1835,6 @@
 
             showToast('success', 'Account created successfully! Please login.');
             switchToLogin();
-            // After signup, disable signup link
             document.getElementById('signupLink').style.display = 'none';
         }
 
@@ -1358,12 +1844,12 @@
             currentUser = null;
             updateUI();
             showToast('info', 'You have been logged out.');
+            closePlaylist();
         }
 
         // ============================================================
         // PASSWORD MANAGEMENT
         // ============================================================
-
         function showForgotPassword() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('forgotPasswordForm').style.display = 'block';
@@ -1372,13 +1858,10 @@
 
         async function resetPassword() {
             const email = document.getElementById('resetEmail').value.trim();
-
-            // 🔒 BLOCK: Only allow artist email to reset password
             if (email !== ARTIST_EMAIL) {
                 showToast('error', 'This email is not the artist account.');
                 return;
             }
-
             if (!email) {
                 showToast('error', 'Please enter your email address.');
                 return;
@@ -1435,9 +1918,7 @@
                     return;
                 }
 
-                const { data, error } = await supabase.auth.updateUser({
-                    password: newPassword
-                });
+                const { data, error } = await supabase.auth.updateUser({ password: newPassword });
 
                 if (error) {
                     showToast('error', 'Failed to change password: ' + error.message);
@@ -1515,9 +1996,6 @@
             if (signupLink) {
                 signupLink.style.display = hasUser ? 'none' : 'inline';
             }
-            if (hasUser) {
-                signupDisabled = true;
-            }
         }
 
         // ============================================================
@@ -1526,7 +2004,48 @@
         function toggleMode() {
             document.body.classList.toggle('dark');
             document.getElementById('modeLabel').textContent = document.body.classList.contains('dark') ? 'Dark' : 'Light';
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
         }
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+            document.getElementById('modeLabel').textContent = 'Dark';
+        }
+
+        // ============================================================
+        // COUNTDOWN TIMER
+        // ============================================================
+        function startCountdown() {
+            const targetDate = new Date('2026-07-20T00:00:00').getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+
+                if (diff <= 0) {
+                    document.getElementById('cdDays').textContent = '00';
+                    document.getElementById('cdHours').textContent = '00';
+                    document.getElementById('cdMinutes').textContent = '00';
+                    document.getElementById('cdSeconds').textContent = '00';
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cdDays').textContent = String(days).padStart(2, '0');
+                document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('cdMinutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('cdSeconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        startCountdown();
 
         // ============================================================
         // LOAD ALL DATA
@@ -1539,6 +2058,7 @@
             await loadMedia('audio');
             await loadMedia('image');
             await loadAlbums();
+            updateAnalytics();
         }
 
         // ============================================================
@@ -1669,7 +2189,7 @@
                 div.dataset.id = post.id;
                 let mediaHtml = '';
                 if (post.media_url && post.media_type === 'image') {
-                    mediaHtml = `<img src="${post.media_url}" alt="post image">`;
+                    mediaHtml = `<img src="${post.media_url}" alt="post image" onclick="openLightbox('${post.media_url}')">`;
                 } else if (post.media_url && post.media_type === 'video') {
                     mediaHtml = `<video src="${post.media_url}" controls></video>`;
                 }
@@ -1691,6 +2211,7 @@
                     `;
                 feed.appendChild(div);
             });
+            updateAnalytics();
         }
 
         async function submitPost() {
@@ -1791,6 +2312,66 @@
         }
 
         // ============================================================
+        // FAN WALL
+        // ============================================================
+        function addFanReview() {
+            const input = document.getElementById('fanInput');
+            const stars = document.getElementById('fanStars').value;
+            const name = prompt('Enter your name:');
+            if (!name || !input.value.trim()) {
+                showToast('error', 'Please enter your name and review.');
+                return;
+            }
+            const wall = document.getElementById('fanWall');
+            const div = document.createElement('div');
+            div.className = 'fan-item';
+            div.innerHTML = `<span class="fan-name">${name}</span> <span class="fan-stars">${stars}</span> "${input.value.trim()}"`;
+            wall.prepend(div);
+            input.value = '';
+            showToast('success', 'Thanks for your review!');
+        }
+
+        // ============================================================
+        // SHARE BUTTONS
+        // ============================================================
+        function shareOn(platform) {
+            const url = window.location.href;
+            const text = 'Check out Yo Maps!';
+            let shareUrl = '';
+
+            switch (platform) {
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+                    break;
+                case 'linkedin':
+                    shareUrl =
+                        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`;
+                    break;
+                case 'email':
+                    shareUrl = `mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent('Check this out: ' + url)}`;
+                    break;
+                default:
+                    return;
+            }
+
+            window.open(shareUrl, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast('success', 'Link copied to clipboard!');
+            }).catch(() => {
+                showToast('error', 'Failed to copy link.');
+            });
+        }
+
+        // ============================================================
         // MEDIA (Audio, Video, Images)
         // ============================================================
         async function loadMedia(type) {
@@ -1803,14 +2384,36 @@
                 return;
             }
             grid.innerHTML = '';
+
+            // Build playlist for audio
+            if (type === 'audio') {
+                playlist = data.map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    url: item.file_url,
+                    cover: item.cover_url || 'https://i.pravatar.cc/300?img=12'
+                }));
+            }
+
             data.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'media-item';
                 div.dataset.id = item.id;
-                const thumbContent = item.cover_url ? `<img src="${item.cover_url}" alt="${item.title}">` :
+                const thumbContent = item.cover_url ? `<img src="${item.cover_url}" alt="${item.title}" onclick="event.stopPropagation(); openLightbox('${item.cover_url}')">` :
                     `<i class="fas ${type === 'video' ? 'fa-play-circle' : type === 'audio' ? 'fa-music' : 'fa-image'}"></i>`;
                 const playOverlay = type === 'video' ? `<div class="play-overlay"><i class="fas fa-play-circle"></i></div>` :
                     '';
+
+                let extraActions = '';
+                if (type === 'audio') {
+                    extraActions =
+                        `<button onclick="event.stopPropagation(); playFromPlaylist(${data.indexOf(item)})" style="background:var(--purple); border:none; color:#fff; padding:0.2rem 0.8rem; border-radius:var(--radius); font-size:0.6rem; margin-top:0.3rem; cursor:pointer;"><i class="fas fa-play"></i> Play</button>`;
+                }
+                if (type === 'image') {
+                    extraActions =
+                        `<button onclick="event.stopPropagation(); openLightbox('${item.file_url}')" style="background:var(--purple); border:none; color:#fff; padding:0.2rem 0.8rem; border-radius:var(--radius); font-size:0.6rem; margin-top:0.3rem; cursor:pointer;"><i class="fas fa-expand"></i> View</button>`;
+                }
+
                 div.innerHTML = `
                         <div class="thumb">${thumbContent}${playOverlay}</div>
                         <div class="info">
@@ -1819,6 +2422,7 @@
                                 <span><i class="fas fa-eye"></i> ${item.views || 0}</span>
                                 <span><i class="fas fa-heart"></i> ${item.likes || 0}</span>
                             </div>
+                            ${extraActions}
                         </div>
                         <button class="item-edit" onclick="event.stopPropagation(); editMediaItem('${item.id}')"><i class="fas fa-pen"></i></button>
                         <button class="item-delete" onclick="event.stopPropagation(); deleteMediaItem('${item.id}')"><i class="fas fa-trash"></i></button>
@@ -1827,19 +2431,23 @@
                     div.querySelector('.item-edit').classList.add('show');
                     div.querySelector('.item-delete').classList.add('show');
                 }
-                div.addEventListener('click', function() {
-                    if (type === 'audio') {
-                        const audio = new Audio(item.file_url);
-                        audio.play();
-                        showToast('info', 'Now playing: ' + item.title);
-                    } else if (type === 'video') {
+                if (type === 'video') {
+                    div.addEventListener('click', function() {
                         window.open(item.file_url, '_blank');
-                    } else {
-                        window.open(item.file_url, '_blank');
-                    }
-                });
+                        incrementViews(item.id, 'video');
+                    });
+                }
                 grid.appendChild(div);
             });
+            updateAnalytics();
+        }
+
+        async function incrementViews(id, type) {
+            const { data } = await supabase.from('media').select('views').eq('id', id).single();
+            if (!data) return;
+            const newViews = (data.views || 0) + 1;
+            await supabase.from('media').update({ views: newViews }).eq('id', id);
+            updateAnalytics();
         }
 
         async function editMediaItem(id) {
@@ -1868,6 +2476,70 @@
             await supabase.from('media').delete().eq('id', id);
             if (data) loadMedia(data.type);
             showToast('success', 'Media deleted successfully.');
+            updateAnalytics();
+        }
+
+        // ============================================================
+        // PLAYLIST PLAYER
+        // ============================================================
+        function playFromPlaylist(index) {
+            if (playlist.length === 0) return;
+            playlistIndex = index;
+            const track = playlist[index];
+            if (!track) return;
+
+            document.getElementById('ppTitle').textContent = track.title;
+            document.getElementById('ppCover').src = track.cover || 'https://i.pravatar.cc/300?img=12';
+            document.getElementById('playlistPlayer').classList.add('show');
+
+            if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer.src = track.url;
+            } else {
+                audioPlayer = new Audio(track.url);
+            }
+
+            audioPlayer.play();
+            isPlaying = true;
+            document.getElementById('ppPlayBtn').innerHTML = '<i class="fas fa-pause-circle"></i>';
+            showToast('info', 'Now playing: ' + track.title);
+
+            audioPlayer.onended = function() {
+                playlistNext();
+            };
+        }
+
+        function togglePlay() {
+            if (!audioPlayer) return;
+            if (isPlaying) {
+                audioPlayer.pause();
+                isPlaying = false;
+                document.getElementById('ppPlayBtn').innerHTML = '<i class="fas fa-play-circle"></i>';
+            } else {
+                audioPlayer.play();
+                isPlaying = true;
+                document.getElementById('ppPlayBtn').innerHTML = '<i class="fas fa-pause-circle"></i>';
+            }
+        }
+
+        function playlistNext() {
+            if (playlist.length === 0) return;
+            playlistIndex = (playlistIndex + 1) % playlist.length;
+            playFromPlaylist(playlistIndex);
+        }
+
+        function playlistPrev() {
+            if (playlist.length === 0) return;
+            playlistIndex = (playlistIndex - 1 + playlist.length) % playlist.length;
+            playFromPlaylist(playlistIndex);
+        }
+
+        function closePlaylist() {
+            if (audioPlayer) {
+                audioPlayer.pause();
+                isPlaying = false;
+            }
+            document.getElementById('playlistPlayer').classList.remove('show');
         }
 
         // ============================================================
@@ -1886,7 +2558,7 @@
             data.forEach(album => {
                 const div = document.createElement('div');
                 div.className = 'media-item';
-                const coverContent = album.cover_url ? `<img src="${album.cover_url}" alt="${album.title}">` :
+                const coverContent = album.cover_url ? `<img src="${album.cover_url}" alt="${album.title}" onclick="event.stopPropagation(); openLightbox('${album.cover_url}')">` :
                     `<i class="fas fa-compact-disc"></i>`;
                 div.innerHTML = `
                         <div class="thumb">${coverContent}</div>
@@ -1948,6 +2620,22 @@
                 document.getElementById('albumCoverPreviewImg').src = ev.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        // ============================================================
+        // LIGHTBOX
+        // ============================================================
+        function openLightbox(imageUrl) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            img.src = imageUrl;
+            lightbox.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('show');
+            document.body.style.overflow = '';
         }
 
         // ============================================================
@@ -2169,8 +2857,72 @@
                 document.getElementById('coverPreview').style.display = 'none';
                 selectedFile = null;
                 selectedCover = null;
+                updateAnalytics();
             } catch (err) {
                 showToast('error', 'Error: ' + err.message);
+            }
+        }
+
+        // ============================================================
+        // TOUR & MERCH
+        // ============================================================
+        function buyTicket(city) {
+            showToast('info', '🎫 Tickets for ' + city + ' coming soon!');
+        }
+
+        function buyMerch(item, price) {
+            showToast('success', 'Added ' + item + ' ($' + price + ') to cart!');
+        }
+
+        function downloadPressKit(type) {
+            const messages = {
+                'photos': '📸 Downloading press photos...',
+                'bio': '📄 Downloading artist bio...',
+                'album-art': '💿 Downloading album art...',
+                'press-release': '📰 Downloading press release...'
+            };
+            showToast('info', messages[type] || 'Downloading...');
+            // Simulate download
+            setTimeout(() => {
+                showToast('success', type + ' downloaded successfully!');
+            }, 1500);
+        }
+
+        // ============================================================
+        // ANALYTICS
+        // ============================================================
+        async function updateAnalytics() {
+            try {
+                // Get media counts
+                const { data: mediaData } = await supabase.from('media').select('type, views, likes');
+                const { data: postsData } = await supabase.from('posts').select('likes');
+
+                let totalViews = 0;
+                let songPlays = 0;
+                let videoViews = 0;
+                let postEngagement = 0;
+
+                if (mediaData) {
+                    mediaData.forEach(item => {
+                        totalViews += item.views || 0;
+                        if (item.type === 'audio') songPlays += item.views || 0;
+                        if (item.type === 'video') videoViews += item.views || 0;
+                    });
+                }
+
+                if (postsData) {
+                    postsData.forEach(post => {
+                        postEngagement += post.likes || 0;
+                    });
+                }
+
+                document.getElementById('totalViews').textContent = totalViews;
+                document.getElementById('songPlays').textContent = songPlays;
+                document.getElementById('videoViews').textContent = videoViews;
+                document.getElementById('postEngagement').textContent = postEngagement;
+
+            } catch (err) {
+                console.log('Analytics update error:', err);
             }
         }
 
@@ -2183,11 +2935,15 @@
                 document.querySelectorAll('.nav-bar a').forEach(a => a.classList.remove('active'));
                 this.classList.add('active');
                 const tabName = this.dataset.tab;
+
                 document.getElementById('homeSection').style.display = 'none';
                 document.getElementById('videoGrid').style.display = 'none';
                 document.getElementById('audioGrid').style.display = 'none';
                 document.getElementById('imageGrid').style.display = 'none';
                 document.getElementById('albumGrid').style.display = 'none';
+                document.getElementById('tourSection').style.display = 'none';
+                document.getElementById('merchSection').style.display = 'none';
+
                 if (tabName === 'home') {
                     document.getElementById('homeSection').style.display = 'block';
                 } else if (tabName === 'videos') {
@@ -2198,6 +2954,10 @@
                     document.getElementById('imageGrid').style.display = 'grid';
                 } else if (tabName === 'albums') {
                     document.getElementById('albumGrid').style.display = 'grid';
+                } else if (tabName === 'tour') {
+                    document.getElementById('tourSection').style.display = 'block';
+                } else if (tabName === 'merch') {
+                    document.getElementById('merchSection').style.display = 'block';
                 }
             });
         });
@@ -2238,7 +2998,8 @@
             if (document.getElementById('homeSection').style.display !== 'none') {
                 loadPosts();
             }
-        }, 30000);
+            updateAnalytics();
+        }, 60000);
     </script>
 </body>
-</html>
+    </html>
