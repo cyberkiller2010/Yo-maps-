@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yo Maps · Official EPK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.0/dist/umd/supabase.min.js">
+    </script>
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg: #f5f3f7;
+            --glass: rgba(255, 255, 255, 0.55);
+            --border: rgba(120, 80, 200, 0.15);
+            --text: #1a1428;
+            --purple: #6a3fbf;
+            --purple-light: #8a6fd4;
+            --shadow: 0 8px 32px rgba(100, 70, 180, 0.12);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --placeholder: #9a8aaa;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --radius: 40px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.dark {
+            --bg: #0c0a14;
+            --glass: rgba(60, 40, 100, 0.25);
+            --border: rgba(180, 140, 255, 0.2);
+            --text: #f0ecf5;
+            --purple: #b48cff;
+            --purple-light: #d4bfff;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --card-bg: rgba(40, 28, 70, 0.35);
+            --input-bg: rgba(30, 20, 50, 0.5);
+            --placeholder: #6b5a8a;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: var(--bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple);
+            border-radius: 10px;
+        }
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .epk-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 1.8rem 3rem;
+            animation: fadeIn 0.6s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .top-bar button {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.35rem 1.2rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        .top-bar button:hover {
+            background: var(--purple);
+            color: #fff;
+        }
+        .top-bar button i {
+            color: var(--purple);
+        }
+        .top-bar button:hover i {
+            color: #fff;
+        }
+        .top-bar .user-email {
+            font-size: 0.8rem;
+            color: var(--placeholder);
+            padding: 0.2rem 1rem;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        /* ===== HEADER ===== */
+        .brand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 2rem;
+            border-radius: 60px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--purple), var(--purple-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .brand i {
+            -webkit-text-fill-color: initial;
+            color: var(--purple);
+            margin-right: 6px;
+        }
+        .brand-header .tag {
+            background: rgba(106, 63, 191, 0.1);
+            padding: 0.2rem 1.2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        .brand-header .tag i {
+            color: var(--purple);
+            margin-right: 4px;
+        }
+
+        /* ===== PROFILE CARD ===== */
+        .profile-card {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem 2.5rem;
+            border-radius: 50px;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            margin-bottom: 1.8rem;
+        }
+        .profile-avatar {
+            flex: 0 0 120px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--purple);
+            overflow: hidden;
+            background: #e8e0f0;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+        .profile-avatar:hover {
+            transform: scale(1.02);
+        }
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .profile-avatar .edit-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: var(--purple);
+            color: #fff;
+            border-radius: 50%;
+            padding: 4px 7px;
+            font-size: 0.6rem;
+            border: 2px solid var(--bg);
+            display: none;
+        }
+        .profile-avatar .edit-badge.show {
+            display: block;
+        }
+        .profile-text h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 1px;
+        }
+        .profile-text h1:focus {
+            outline: 2px solid var(--purple);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+        .profile-text .tagline {
+            font-size: 1.1rem;
+            color: var(--purple);
+            margin: 0.2rem 0 0.6rem;
+        }
+        .profile-text .tagline:focus {
+            outline: 2px solid var(--purple);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+        .profile-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 2rem;
+            margin-top: 0.3rem;
+        }
+        .profile-stats span {
+            background: var(--card-bg);
+            padding: 0.2rem 1.2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .profile-stats i {
+            color: var(--purple);
+            margin-right: 6px;
+        }
+        .btn-follow {
+            background: var(--purple);
+            border: none;
+            color: #fff;
+            padding: 0.4rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px var(--purple);
+        }
+        .save-btn {
+            background: var(--purple);
+            border: none;
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: none;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .save-btn.show {
+            display: inline-block;
+        }
+        .save-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== NAV ===== */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem 1.5rem;
+            padding: 0.5rem 2rem;
+            border-radius: 60px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .nav-bar a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .nav-bar a:hover,
+        .nav-bar a.active {
+            background: var(--purple);
+            color: #fff;
+        }
+        .nav-bar a i {
+            color: var(--purple);
+        }
+        .nav-bar a:hover i,
+        .nav-bar a.active i {
+            color: #fff;
+        }
+
+        /* ===== HOME ===== */
+        #homeSection {
+            display: block;
+            margin-bottom: 2rem;
+        }
+        .home-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        @media(max-width:768px) {
+            .home-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .home-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.8rem 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            transition: var(--transition);
+        }
+        .home-card h3 {
+            color: var(--purple);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .home-card .editable:focus {
+            outline: 2px solid var(--purple);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+        .home-card ul {
+            list-style: none;
+        }
+        .home-card ul li {
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .home-card ul li i {
+            color: var(--purple);
+            width: 24px;
+        }
+
+        /* ===== SOCIAL LINKS ===== */
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+        .social-link-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .social-link-wrapper a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            padding: 0.4rem 1.2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        .social-link-wrapper a:hover {
+            background: var(--purple);
+            color: #fff;
+        }
+        .social-link-wrapper a i {
+            font-size: 1.2rem;
+            color: var(--purple);
+        }
+        .social-link-wrapper a:hover i {
+            color: #fff;
+        }
+        .social-link-wrapper .edit-link {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--purple);
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.5rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid var(--bg);
+            z-index: 5;
+        }
+        .social-link-wrapper .edit-link.show {
+            display: flex;
+        }
+        .social-link-wrapper .edit-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.3rem 0;
+        }
+        .contact-item i {
+            color: var(--purple);
+            width: 24px;
+        }
+        .contact-item:focus {
+            outline: 2px solid var(--purple);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        /* ===== POSTS ===== */
+        .post-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 0.8rem;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .post-item {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid var(--border);
+        }
+        .post-item .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .post-item .post-header .post-author {
+            font-weight: 600;
+            color: var(--purple);
+        }
+        .post-item .post-header .post-time {
+            font-size: 0.7rem;
+            color: var(--placeholder);
+        }
+        .post-item .post-content {
+            margin-bottom: 0.6rem;
+        }
+        .post-item .post-content img,
+        .post-item .post-content video {
+            max-width: 100%;
+            border-radius: 20px;
+            margin-top: 0.5rem;
+            max-height: 300px;
+            object-fit: cover;
+        }
+        .post-actions {
+            display: flex;
+            gap: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 0.6rem;
+            margin-top: 0.4rem;
+        }
+        .post-actions button {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+        .post-actions button:hover {
+            background: var(--purple);
+            color: #fff;
+        }
+        .post-actions button i {
+            color: var(--purple);
+        }
+        .post-actions button:hover i {
+            color: #fff;
+        }
+        .post-actions .liked i {
+            color: var(--purple);
+        }
+        .post-comments {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--border);
+            font-size: 0.8rem;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+        .post-comments div {
+            padding: 0.2rem 0;
+            color: var(--placeholder);
+        }
+
+        /* ===== NEW POST ===== */
+        .new-post {
+            margin-bottom: 1rem;
+        }
+        .new-post textarea {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+        }
+        .new-post textarea:focus {
+            border-color: var(--purple);
+        }
+        .new-post .post-upload-options {
+            display: flex;
+            gap: 0.8rem;
+            margin: 0.5rem 0;
+            flex-wrap: wrap;
+        }
+        .new-post .post-upload-options button {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            color: var(--text);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .new-post .post-upload-options button:hover {
+            background: var(--purple);
+            color: #fff;
+        }
+        .new-post .post-upload-options button i {
+            color: var(--purple);
+        }
+        .new-post .post-upload-options button:hover i {
+            color: #fff;
+        }
+        .new-post .post-submit {
+            background: var(--purple);
+            border: none;
+            color: #fff;
+            padding: 0.4rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.3rem;
+        }
+        .new-post .post-submit:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== MEDIA GRIDS ===== */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .media-item {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+        .media-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--purple);
+        }
+        .media-item .thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: var(--purple);
+            position: relative;
+        }
+        .media-item .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .media-item .thumb .play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #fff;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .media-item:hover .thumb .play-overlay {
+            opacity: 1;
+        }
+        .media-item .info {
+            padding: 0.6rem 1rem 1rem;
+        }
+        .media-item .info h4 {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .media-item .info .meta {
+            font-size: 0.75rem;
+            color: var(--placeholder);
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.2rem;
+        }
+        .media-item .info .meta i {
+            color: var(--purple);
+            margin-right: 3px;
+        }
+        .media-item .item-edit,
+        .media-item .item-delete {
+            position: absolute;
+            top: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            z-index: 3;
+        }
+        .media-item .item-edit {
+            right: 40px;
+        }
+        .media-item .item-delete {
+            right: 8px;
+        }
+        .media-item .item-edit.show,
+        .media-item .item-delete.show {
+            display: flex;
+        }
+        .media-item .item-edit:hover {
+            background: var(--purple);
+        }
+        .media-item .item-delete:hover {
+            background: var(--danger);
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--bg);
+            padding: 2.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            max-width: 520px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-content .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        .modal-content .close-modal:hover {
+            color: var(--purple);
+        }
+        .modal-content h2 {
+            color: var(--purple);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-content input,
+        .modal-content select,
+        .modal-content textarea {
+            width: 100%;
+            padding: 0.7rem 1.2rem;
+            margin-bottom: 0.8rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            outline: none;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .modal-content input:focus,
+        .modal-content select:focus,
+        .modal-content textarea:focus {
+            border-color: var(--purple);
+        }
+        .modal-content .upload-options {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .modal-content .upload-options button {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--glass);
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            min-width: 70px;
+        }
+        .modal-content .upload-options button.active,
+        .modal-content .upload-options button:hover {
+            background: var(--purple);
+            color: #fff;
+        }
+        .modal-content .file-drop {
+            background: var(--glass);
+            border: 2px dashed var(--border);
+            border-radius: 30px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .modal-content .file-drop:hover {
+            border-color: var(--purple);
+        }
+        .modal-content .file-drop i {
+            font-size: 2rem;
+            color: var(--purple);
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        .modal-content .file-drop input {
+            display: none;
+        }
+        .modal-content .upload-btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--purple);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .modal-content .upload-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel {
+            display: none;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+        .admin-panel.show {
+            display: block;
+        }
+        .admin-panel h3 {
+            color: var(--purple);
+            margin-bottom: 0.8rem;
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 0.8rem;
+        }
+        .admin-grid .admin-item {
+            background: var(--card-bg);
+            padding: 0.6rem 1rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+        .admin-grid .admin-item:hover {
+            background: var(--purple);
+            color: #fff;
+            border-color: var(--purple);
+        }
+        .admin-grid .admin-item i {
+            color: var(--purple);
+        }
+        .admin-grid .admin-item:hover i {
+            color: #fff;
+        }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.9rem;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .toast-success {
+            background: var(--success);
+        }
+        .toast-error {
+            background: var(--danger);
+        }
+        .toast-info {
+            background: var(--purple);
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--placeholder);
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border);
+            padding-top: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        /* ===== LOADING ===== */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--placeholder);
+        }
+        .loading i {
+            color: var(--purple);
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:768px) {
+            .epk-wrapper {
+                padding: 0.8rem;
+            }
+            .profile-card {
+                padding: 1.5rem;
+            }
+            .profile-text h1 {
+                font-size: 2rem;
+            }
+            .modal-content {
+                padding: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="epk-wrapper" id="app">
+
+        <!-- ===== TOP BAR ===== -->
+        <div class="top-bar">
+            <button onclick="toggleMode()"><i class="fas fa-sun"></i> <span id="modeLabel">Light</span></button>
+            <button id="loginBtn" onclick="openLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <button id="logoutBtn" onclick="logout()" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            <span id="userStatus" class="user-email" style="display:none;"></span>
+        </div>
+
+        <!-- ===== HEADER ===== -->
+        <header class="brand-header">
+            <div class="brand"><i class="fas fa-microphone-alt"></i> YO MAPS</div>
+            <span class="tag"><i class="fas fa-user"></i> @yomaps</span>
+        </header>
+
+        <!-- ===== PROFILE CARD ===== -->
+        <div class="profile-card">
+            <div class="profile-avatar" id="avatarContainer" onclick="if(isLoggedIn) document.getElementById('avatarFileInput').click()">
+                <img id="profileImg" src="https://i.pravatar.cc/300?img=12" alt="Yo Maps">
+                <span class="edit-badge" id="avatarBadge"><i class="fas fa-camera"></i></span>
+                <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="uploadAvatar(event)">
+            </div>
+            <div class="profile-text">
+                <h1 id="artistName" contenteditable="false" class="editable">Yo Maps</h1>
+                <button class="save-btn" id="saveNameBtn" onclick="saveEditable('artistName', 'name')">Save</button>
+                <div class="tagline" id="artistTagline" contenteditable="false" class="editable"><i class="fas fa-star" style="color:var(--purple);"></i> Zambian singer · songwriter</div>
+                <button class="save-btn" id="saveTaglineBtn" onclick="saveEditable('artistTagline', 'tagline')">Save</button>
+                <div class="profile-stats">
+                    <span><i class="fas fa-user-friends"></i> <span id="followersCount">0</span> followers</span>
+                    <span><i class="fas fa-heart"></i> <span id="likesCount">0</span> likes</span>
+                    <span><i class="fas fa-video"></i> <span id="videoCount">0</span> videos</span>
+                </div>
+                <div style="margin-top:0.5rem;">
+                    <span class="btn-follow"><i class="fas fa-plus"></i> Follow</span>
+                    <span style="margin-left:0.8rem; font-size:0.85rem; color:var(--placeholder);"><i class="fas fa-comment"></i> Say hi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== NAV ===== -->
+        <nav class="nav-bar">
+            <a class="active" data-tab="home"><i class="fas fa-home"></i> Home</a>
+            <a data-tab="videos"><i class="fas fa-video"></i> Videos</a>
+            <a data-tab="audio"><i class="fas fa-music"></i> Audio</a>
+            <a data-tab="images"><i class="fas fa-images"></i> Images</a>
+            <a data-tab="albums"><i class="fas fa-compact-disc"></i> Albums</a>
+        </nav>
+
+        <!-- ===== HOME SECTION ===== -->
+        <div id="homeSection">
+            <div class="home-grid">
+                <div>
+                    <!-- About -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-user-edit"></i> About</h3>
+                        <div id="aboutContent" contenteditable="false" class="editable">
+                            <p><strong style="color:var(--purple);">Elton Mulenga</strong> (born 1994), known as <strong>Yo Maps</strong>, is a Zambian singer, songwriter, and producer. He rose to fame with the 2018 hit "Finally" featuring Macky 2.</p>
+                            <p style="margin-top:0.8rem;">His album <em>Komando</em> (2021) racked up 18 million streams in its first month. He made history as the first artist to sell out Heroes Stadium in Lusaka, drawing 40,000+ fans.</p>
+                            <p style="margin-top:0.8rem;"><i class="fas fa-quote-left" style="color:var(--purple);"></i> "My mission is to put Zambian music on the global map."</p>
+                        </div>
+                        <button class="save-btn" id="saveAboutBtn" onclick="saveEditable('aboutContent', 'about')">Save</button>
+                    </div>
+
+                    <!-- Updates / Posts -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-bullhorn"></i> Updates</h3>
+                        <div class="new-post" id="newPostForm" style="display:none;">
+                            <textarea id="postText" placeholder="What's on your mind?"></textarea>
+                            <div class="post-upload-options">
+                                <button onclick="document.getElementById('postImageInput').click()"><i class="fas fa-image"></i> Image</button>
+                                <button onclick="document.getElementById('postVideoInput').click()"><i class="fas fa-video"></i> Video</button>
+                                <input type="file" id="postImageInput" accept="image/*" style="display:none;" onchange="previewPostFile(this, 'image')">
+                                <input type="file" id="postVideoInput" accept="video/*" style="display:none;" onchange="previewPostFile(this, 'video')">
+                            </div>
+                            <div id="postPreview" style="display:none; margin-bottom:0.5rem;">
+                                <img id="postPreviewImg" src="" style="max-width:150px; max-height:150px; border-radius:20px;">
+                                <video id="postPreviewVideo" src="" style="max-width:150px; max-height:150px; border-radius:20px;" controls></video>
+                                <button onclick="clearPostPreview()" style="background:var(--danger); color:#fff; border:none; border-radius:var(--radius); padding:0.2rem 0.8rem; font-size:0.7rem; cursor:pointer;">Remove</button>
+                            </div>
+                            <button class="post-submit" onclick="submitPost()"><i class="fas fa-paper-plane"></i> Post</button>
+                        </div>
+                        <div class="post-feed" id="postFeed">
+                            <div class="loading"><i class="fas fa-spinner"></i> Loading posts...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- Highlights -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-trophy"></i> Highlights</h3>
+                        <ul id="highlightsList" contenteditable="false" class="editable">
+                            <li><i class="fas fa-trophy"></i> AFRIMA 2025 Best Male</li>
+                            <li><i class="fas fa-certificate"></i> Ngoma Award: Song of the Year</li>
+                            <li><i class="fas fa-handshake"></i> Collab: Omarion, Iyanya</li>
+                            <li><i class="fas fa-globe"></i> 3 albums + 2026 "Vibes"</li>
+                            <li><i class="fas fa-star"></i> Heroes Stadium sellout (40k)</li>
+                        </ul>
+                        <button class="save-btn" id="saveHighlightsBtn" onclick="saveEditable('highlightsList', 'highlights')">Save</button>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-share-alt"></i> Connect & Stream</h3>
+                        <div class="social-links" id="socialLinksContainer">
+                            <div class="loading"><i class="fas fa-spinner"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="home-card">
+                        <h3><i class="fas fa-phone"></i> Contact</h3>
+                        <div id="contactInfo" contenteditable="false" class="editable">
+                            <div class="contact-item"><i class="fas fa-envelope"></i> management@yomaps.zm</div>
+                            <div class="contact-item"><i class="fas fa-phone"></i> +260 97 123 4567</div>
+                        </div>
+                        <button class="save-btn" id="saveContactBtn" onclick="saveEditable('contactInfo', 'contact')">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MEDIA GRIDS ===== -->
+        <div id="videoGrid" class="media-grid" style="display:none;"></div>
+        <div id="audioGrid" class="media-grid" style="display:none;"></div>
+        <div id="imageGrid" class="media-grid" style="display:none;"></div>
+        <div id="albumGrid" class="media-grid" style="display:none;"></div>
+
+        <!-- ===== ADMIN PANEL ===== -->
+        <div id="adminPanel" class="admin-panel">
+            <h3><i class="fas fa-cog"></i> Admin Dashboard</h3>
+            <div class="admin-grid">
+                <div class="admin-item" onclick="openUploadModal()"><i class="fas fa-upload"></i> Upload</div>
+                <div class="admin-item" onclick="document.getElementById('avatarFileInput').click()"><i class="fas fa-image"></i> Change Avatar</div>
+                <div class="admin-item" onclick="changePassword()"><i class="fas fa-key"></i> Change Password</div>
+                <div class="admin-item" onclick="showToast('info', 'Edit mode enabled. Click any text to edit, then click Save.')"><i class="fas fa-edit"></i> Edit Mode</div>
+            </div>
+        </div>
+
+        <!-- ===== UPLOAD MODAL ===== -->
+        <div id="uploadModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeUploadModal()"><i class="fas fa-times"></i></span>
+                <h2><i class="fas fa-upload"></i> Upload Media</h2>
+                <div class="upload-options">
+                    <button onclick="setUploadType('video')" id="uploadVideoBtn" class="active"><i class="fas fa-video"></i> Video</button>
+                    <button onclick="setUploadType('audio')" id="uploadAudioBtn"><i class="fas fa-music"></i> Audio</button>
+                    <button onclick="setUploadType('image')" id="uploadImageBtn"><i class="fas fa-image"></i> Image</button>
+                    <button onclick="setUploadType('album')" id="uploadAlbumBtn"><i class="fas fa-compact-disc"></i> Album</button>
+                </div>
+                <div id="uploadForm">
+                    <input type="text" id="uploadTitle" placeholder="Title">
+                    <div id="albumSelectWrapper" style="display:none;">
+                        <select id="uploadAlbumSelect">
+                            <option value="">Select album (optional)</option>
+                            <option value="new">+ Create New Album</option>
+                        </select>
+                        <input type="text" id="newAlbumName" placeholder="New album name" style="display:none; margin-top:0.5rem;">
+                        <div id="albumCoverWrapper" style="display:none; margin-top:0.5rem;">
+                            <div class="file-drop" onclick="document.getElementById('albumCoverInput').click()">
+                                <i class="fas fa-image"></i>
+                                <p>Click to upload album cover</p>
+                                <input type="file" id="albumCoverInput" accept="image/*" onchange="handleAlbumCoverSelect(event)">
+                            </div>
+                            <div id="albumCoverPreview" style="display:none; margin-top:0.5rem;">
+                                <img id="albumCoverPreviewImg" src="" style="max-width:100px; max-height:100px; border-radius:20px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-drop" onclick="document.getElementById('mediaFileInput').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p id="fileDropLabel">Click to upload file</p>
+                        <input type="file" id="mediaFileInput" accept="video/*,audio/*,image/*" onchange="handleFileSelect(event)">
+                    </div>
+                    <div id="coverWrapper" style="display:none;">
+                        <div class="file-drop" onclick="document.getElementById('coverFileInput').click()">
+                            <i class="fas fa-image"></i>
+                            <p>Click to upload cover art</p>
+                            <input type="file" id="coverFileInput" accept="image/*" onchange="handleCoverSelect(event)">
+                        </div>
+                        <div id="coverPreview" style="display:none; margin-top:0.5rem;">
+                            <img id="coverPreviewImg" src="" style="max-width:100px; max-height:100px; border-radius:20px;">
+                        </div>
+                    </div>
+                    <button class="upload-btn" onclick="performUpload()"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== LOGIN MODAL ===== -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeLogin()"><i class="fas fa-times"></i></span>
+                <h2><i class="fas fa-lock"></i> Artist Login</h2>
+
+                <!-- Login Form -->
+                <div id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Email" value="mundiamartin293@gmail.com">
+                    <input type="password" id="loginPassword" placeholder="Password" value="Admin123!">
+                    <button class="upload-btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
+
+                    <div style="margin-top: 0.8rem; text-align: center; display: flex; flex-direction: column; gap: 0.4rem;">
+                        <a href="#" onclick="showForgotPassword()" style="color: var(--purple); font-size: 0.85rem;">
+                            <i class="fas fa-key"></i> Forgot password?
+                        </a>
+                        <a href="#" onclick="switchToSignup()" style="color: var(--purple); font-size: 0.85rem;">
+                            <i class="fas fa-user-plus"></i> Don't have an account? Sign up
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Forgot Password Form -->
+                <div id="forgotPasswordForm" style="display: none; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                    <p style="color: var(--placeholder); font-size: 0.85rem; margin-bottom: 0.8rem;">
+                        Enter your email and we'll send you a password reset link.
+                    </p>
+                    <input type="email" id="resetEmail" placeholder="Enter your email" value="mundiamartin293@gmail.com">
+                    <button class="upload-btn" onclick="resetPassword()" style="background: var(--purple);">
+                        <i class="fas fa-paper-plane"></i> Send Reset Link
+                    </button>
+                    <div style="margin-top: 0.5rem; text-align: center;">
+                        <a href="#" onclick="switchToLogin()" style="color: var(--purple); font-size: 0.8rem;">
+                            <i class="fas fa-arrow-left"></i> Back to Login
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Signup Form -->
+                <div id="signupForm" style="display: none; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                    <input type="email" id="signupEmail" placeholder="Email" value="mundiamartin293@gmail.com">
+                    <input type="password" id="signupPassword" placeholder="Password" value="Admin123!">
+                    <button class="upload-btn" onclick="signup()" style="background: var(--success);">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                    <div style="margin-top: 0.5rem; text-align: center;">
+                        <a href="#" onclick="switchToLogin()" style="color: var(--purple); font-size: 0.8rem;">
+                            <i class="fas fa-arrow-left"></i> Back to Login
+                        </a>
+                    </div>
+                    <p style="margin-top:0.5rem; text-align:center; font-size:0.7rem; color:var(--placeholder);">
+                        Note: Sign-ups are only available for Yo Maps (first user).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TOAST CONTAINER ===== -->
+        <div class="toast-container" id="toastContainer"></div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+            <span>© 2026 Yo Maps · Elton Mulenga</span>
+            <span><i class="fas fa-music" style="color:var(--purple);"></i> All rights reserved</span>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // SUPABASE CONFIG
+        // ============================================================
+        const SUPABASE_URL = 'https://eeyobomfvqumrjjkzzuc.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_eSh_jYAn4MISbSYy7UkpAw_H55zVqZM';
+        const ARTIST_EMAIL = 'mundiamartin293@gmail.com';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let isLoggedIn = false;
+        let currentUser = null;
+        let uploadType = 'video';
+        let selectedFile = null;
+        let selectedCover = null;
+        let selectedAlbumCover = null;
+        let postFileData = null;
+        let postFileType = null;
+
+        // ============================================================
+        // TOAST NOTIFICATIONS (No Emojis)
+        // ============================================================
+        function showToast(type, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' :
+                type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // ============================================================
+        // AUTHENTICATION
+        // ============================================================
+        async function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showToast('error', 'Please enter both email and password.');
+                return;
+            }
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                showToast('error', 'Login failed: ' + error.message);
+                return;
+            }
+            currentUser = data.user;
+            isLoggedIn = true;
+            closeLogin();
+            updateUI();
+            loadAllData();
+            showToast('success', 'Welcome back, Yo Maps!');
+        }
+
+        async function signup() {
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+
+            if (!email || !password) {
+                showToast('error', 'Please enter both email and password.');
+                return;
+            }
+            if (password.length < 6) {
+                showToast('error', 'Password must be at least 6 characters.');
+                return;
+            }
+
+            // Check if user already exists
+            const { data: existingUsers } = await supabase.from('profiles').select('id').limit(1);
+            if (existingUsers && existingUsers.length > 0) {
+                showToast('error', 'Sign-ups are disabled. Only Yo Maps can have an account.');
+                return;
+            }
+
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { is_artist: true }
+                }
+            });
+
+            if (error) {
+                showToast('error', 'Signup failed: ' + error.message);
+                return;
+            }
+
+            showToast('success', 'Account created successfully! Please login.');
+            switchToLogin();
+        }
+
+        async function logout() {
+            await supabase.auth.signOut();
+            isLoggedIn = false;
+            currentUser = null;
+            updateUI();
+            showToast('info', 'You have been logged out.');
+        }
+
+        // ============================================================
+        // PASSWORD MANAGEMENT
+        // ============================================================
+
+        function showForgotPassword() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+        }
+
+        async function resetPassword() {
+            const email = document.getElementById('resetEmail').value.trim();
+            if (!email) {
+                showToast('error', 'Please enter your email address.');
+                return;
+            }
+
+            const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/reset-password.html',
+            });
+
+            if (error) {
+                showToast('error', 'Failed to send reset link: ' + error.message);
+                return;
+            }
+
+            showToast('success', 'Password reset link sent to ' + email + '. Check your email.');
+            switchToLogin();
+        }
+
+        async function changePassword() {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+
+            const currentPassword = prompt('Enter your current password:');
+            if (currentPassword === null) return;
+            if (!currentPassword) {
+                showToast('error', 'Current password is required.');
+                return;
+            }
+
+            const newPassword = prompt('Enter your new password (min 6 characters):');
+            if (newPassword === null) return;
+            if (!newPassword || newPassword.length < 6) {
+                showToast('error', 'Password must be at least 6 characters.');
+                return;
+            }
+
+            const confirmPassword = prompt('Confirm your new password:');
+            if (confirmPassword === null) return;
+            if (newPassword !== confirmPassword) {
+                showToast('error', 'Passwords do not match.');
+                return;
+            }
+
+            try {
+                const { data: { user }, error: reAuthError } = await supabase.auth.signInWithPassword({
+                    email: currentUser.email,
+                    password: currentPassword,
+                });
+
+                if (reAuthError) {
+                    showToast('error', 'Current password is incorrect.');
+                    return;
+                }
+
+                const { data, error } = await supabase.auth.updateUser({
+                    password: newPassword
+                });
+
+                if (error) {
+                    showToast('error', 'Failed to change password: ' + error.message);
+                    return;
+                }
+
+                showToast('success', 'Password changed successfully. Please login again.');
+                await supabase.auth.signOut();
+                isLoggedIn = false;
+                currentUser = null;
+                updateUI();
+                openLogin();
+
+            } catch (err) {
+                showToast('error', 'Error: ' + err.message);
+            }
+        }
+
+        function switchToLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'none';
+        }
+
+        function switchToSignup() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+        }
+
+        function openLogin() { document.getElementById('loginModal').classList.add('show'); }
+
+        function closeLogin() { document.getElementById('loginModal').classList.remove('show'); }
+
+        // ============================================================
+        // UI UPDATE
+        // ============================================================
+        function updateUI() {
+            const isArtist = isLoggedIn && currentUser && currentUser.email === ARTIST_EMAIL;
+
+            if (isLoggedIn && currentUser) {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'flex';
+                document.getElementById('userStatus').style.display = 'inline-block';
+                document.getElementById('userStatus').textContent = currentUser.email;
+                document.getElementById('adminPanel').classList.add('show');
+                document.getElementById('avatarBadge').classList.add('show');
+                document.getElementById('newPostForm').style.display = 'block';
+                document.querySelectorAll('.item-edit').forEach(el => el.classList.add('show'));
+                document.querySelectorAll('.item-delete').forEach(el => el.classList.add('show'));
+                document.querySelectorAll('.edit-link').forEach(el => el.classList.add('show'));
+                document.querySelectorAll('.editable').forEach(el => el.contentEditable = true);
+                document.querySelectorAll('.save-btn').forEach(el => el.classList.add('show'));
+            } else {
+                document.getElementById('loginBtn').style.display = 'flex';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('userStatus').style.display = 'none';
+                document.getElementById('adminPanel').classList.remove('show');
+                document.getElementById('avatarBadge').classList.remove('show');
+                document.getElementById('newPostForm').style.display = 'none';
+                document.querySelectorAll('.item-edit').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.item-delete').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.edit-link').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.editable').forEach(el => el.contentEditable = false);
+                document.querySelectorAll('.save-btn').forEach(el => el.classList.remove('show'));
+            }
+
+            checkIfSignupDisabled();
+        }
+
+        async function checkIfSignupDisabled() {
+            const { data } = await supabase.from('profiles').select('id').limit(1);
+            const hasUser = data && data.length > 0;
+            const signupLink = document.querySelector('a[onclick="switchToSignup()"]');
+            if (signupLink) {
+                signupLink.style.display = hasUser ? 'none' : 'inline';
+            }
+        }
+
+        // ============================================================
+        // DARK / LIGHT MODE
+        // ============================================================
+        function toggleMode() {
+            document.body.classList.toggle('dark');
+            document.getElementById('modeLabel').textContent = document.body.classList.contains('dark') ? 'Dark' : 'Light';
+        }
+
+        // ============================================================
+        // LOAD ALL DATA
+        // ============================================================
+        async function loadAllData() {
+            await loadProfile();
+            await loadSocialLinks();
+            await loadPosts();
+            await loadMedia('video');
+            await loadMedia('audio');
+            await loadMedia('image');
+            await loadAlbums();
+        }
+
+        // ============================================================
+        // PROFILE
+        // ============================================================
+        async function loadProfile() {
+            const { data, error } = await supabase.from('profiles').select('*').limit(1);
+            if (error || !data || data.length === 0) return;
+            const profile = data[0];
+            document.getElementById('artistName').textContent = profile.name || 'Yo Maps';
+            document.getElementById('artistTagline').innerHTML = '<i class="fas fa-star" style="color:var(--purple);"></i> ' + (profile
+                .tagline || 'Zambian singer · songwriter');
+            document.getElementById('aboutContent').innerHTML = profile.about || '';
+            document.getElementById('followersCount').textContent = profile.followers || 0;
+            if (profile.avatar_url) {
+                document.getElementById('profileImg').src = profile.avatar_url;
+            }
+        }
+
+        async function saveEditable(id, field) {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            const el = document.getElementById(id);
+            const value = el.innerText || el.innerHTML;
+            const { data, error } = await supabase.from('profiles').update({ [field]: value }).eq('id', (await supabase.from(
+                'profiles').select('id').limit(1)).data?.[0]?.id || '');
+            if (error) {
+                showToast('error', 'Save failed: ' + error.message);
+                return;
+            }
+            const btn = document.getElementById('save' + id.charAt(0).toUpperCase() + id.slice(1) + 'Btn');
+            if (btn) {
+                btn.textContent = 'Saved';
+                setTimeout(() => { btn.textContent = 'Save'; }, 1500);
+            }
+            showToast('success', 'Changes saved successfully.');
+        }
+
+        // ============================================================
+        // AVATAR UPLOAD
+        // ============================================================
+        async function uploadAvatar(e) {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}.${fileExt}`;
+            const { data, error } = await supabase.storage.from('avatars').upload(fileName, file);
+
+            if (error) {
+                showToast('error', 'Upload failed: ' + error.message);
+                return;
+            }
+
+            const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(fileName);
+            const avatarUrl = urlData.publicUrl;
+
+            const { error: updateError } = await supabase.from('profiles').update({ avatar_url: avatarUrl }).eq('id', (await supabase
+                .from('profiles').select('id').limit(1)).data?.[0]?.id || '');
+            if (updateError) {
+                showToast('error', 'Update failed: ' + updateError.message);
+                return;
+            }
+            document.getElementById('profileImg').src = avatarUrl;
+            showToast('success', 'Avatar updated successfully.');
+        }
+
+        // ============================================================
+        // SOCIAL LINKS
+        // ============================================================
+        async function loadSocialLinks() {
+            const { data, error } = await supabase.from('social_links').select('*');
+            const container = document.getElementById('socialLinksContainer');
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p style="color:var(--placeholder);">No social links found.</p>';
+                return;
+            }
+            container.innerHTML = '';
+            data.forEach((link, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'social-link-wrapper';
+                wrapper.innerHTML = `
+                        <a href="${link.url}" target="_blank"><i class="${link.icon}"></i> ${link.name}</a>
+                        <span class="edit-link" onclick="event.stopPropagation(); editSocialLink('${link.id}')"><i class="fas fa-pen"></i></span>
+                    `;
+                container.appendChild(wrapper);
+            });
+            if (isLoggedIn) {
+                container.querySelectorAll('.edit-link').forEach(el => el.classList.add('show'));
+            }
+        }
+
+        async function editSocialLink(id) {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            const { data } = await supabase.from('social_links').select('url').eq('id', id).single();
+            if (!data) return;
+            const newUrl = prompt('Enter new URL:', data.url);
+            if (newUrl !== null && newUrl.trim() !== '') {
+                await supabase.from('social_links').update({ url: newUrl.trim() }).eq('id', id);
+                loadSocialLinks();
+                showToast('success', 'Social link updated successfully.');
+            }
+        }
+
+        // ============================================================
+        // POSTS
+        // ============================================================
+        async function loadPosts() {
+            const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+            const feed = document.getElementById('postFeed');
+            if (error || !data || data.length === 0) {
+                feed.innerHTML = '<p style="color:var(--placeholder); text-align:center; padding:1rem;">No updates yet.</p>';
+                return;
+            }
+            feed.innerHTML = '';
+            data.forEach(post => {
+                const div = document.createElement('div');
+                div.className = 'post-item';
+                div.dataset.id = post.id;
+                let mediaHtml = '';
+                if (post.media_url && post.media_type === 'image') {
+                    mediaHtml = `<img src="${post.media_url}" alt="post image">`;
+                } else if (post.media_url && post.media_type === 'video') {
+                    mediaHtml = `<video src="${post.media_url}" controls></video>`;
+                }
+                div.innerHTML = `
+                        <div class="post-header">
+                            <span class="post-author"><i class="fas fa-user" style="color:var(--purple);"></i> Yo Maps</span>
+                            <span class="post-time">${new Date(post.created_at).toLocaleString()}</span>
+                        </div>
+                        <div class="post-content">${post.text || ''} ${mediaHtml}</div>
+                        <div class="post-actions">
+                            <button onclick="likePost('${post.id}')" class="${post.liked ? 'liked' : ''}"><i class="fas fa-heart"></i> <span class="like-count">${post.likes || 0}</span></button>
+                            <button onclick="toggleComments('${post.id}')"><i class="fas fa-comment"></i> <span>0</span></button>
+                            <button onclick="sharePost('${post.id}')"><i class="fas fa-share"></i> Share</button>
+                            ${isLoggedIn ? `<button onclick="deletePost('${post.id}')" style="color:var(--danger);"><i class="fas fa-trash"></i></button>` : ''}
+                        </div>
+                        <div class="post-comments" id="comments-${post.id}" style="display:none;">
+                            <div style="color:var(--placeholder); font-size:0.75rem;">Comments coming soon...</div>
+                        </div>
+                    `;
+                feed.appendChild(div);
+            });
+        }
+
+        async function submitPost() {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            const text = document.getElementById('postText').value.trim();
+            if (!text && !postFileData) {
+                showToast('error', 'Please write something or add media.');
+                return;
+            }
+
+            let mediaUrl = postFileData || null;
+            let mediaType = postFileType || null;
+
+            const { data, error } = await supabase.from('posts').insert({
+                text: text,
+                media_url: mediaUrl,
+                media_type: mediaType,
+                likes: 0
+            });
+
+            if (error) {
+                showToast('error', 'Failed to post: ' + error.message);
+                return;
+            }
+            document.getElementById('postText').value = '';
+            clearPostPreview();
+            loadPosts();
+            showToast('success', 'Post published successfully.');
+        }
+
+        async function likePost(id) {
+            const { data } = await supabase.from('posts').select('likes').eq('id', id).single();
+            if (!data) return;
+            const newLikes = (data.likes || 0) + 1;
+            await supabase.from('posts').update({ likes: newLikes }).eq('id', id);
+            loadPosts();
+        }
+
+        async function deletePost(id) {
+            if (!isLoggedIn) return;
+            if (!confirm('Delete this post?')) return;
+            await supabase.from('posts').delete().eq('id', id);
+            loadPosts();
+            showToast('success', 'Post deleted successfully.');
+        }
+
+        function toggleComments(id) {
+            const el = document.getElementById('comments-' + id);
+            if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function sharePost(id) {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({ title: 'Yo Maps EPK', url: url });
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('success', 'Link copied to clipboard!');
+                }).catch(() => {
+                    showToast('info', 'Share: ' + url);
+                });
+            }
+        }
+
+        function previewPostFile(input, type) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                postFileData = e.target.result;
+                postFileType = type;
+                const preview = document.getElementById('postPreview');
+                preview.style.display = 'block';
+                if (type === 'image') {
+                    document.getElementById('postPreviewImg').src = e.target.result;
+                    document.getElementById('postPreviewImg').style.display = 'block';
+                    document.getElementById('postPreviewVideo').style.display = 'none';
+                } else {
+                    document.getElementById('postPreviewVideo').src = e.target.result;
+                    document.getElementById('postPreviewVideo').style.display = 'block';
+                    document.getElementById('postPreviewImg').style.display = 'none';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearPostPreview() {
+            postFileData = null;
+            postFileType = null;
+            document.getElementById('postPreview').style.display = 'none';
+            document.getElementById('postPreviewImg').src = '';
+            document.getElementById('postPreviewVideo').src = '';
+            document.getElementById('postImageInput').value = '';
+            document.getElementById('postVideoInput').value = '';
+        }
+
+        // ============================================================
+        // MEDIA (Audio, Video, Images)
+        // ============================================================
+        async function loadMedia(type) {
+            const gridId = type === 'video' ? 'videoGrid' : type === 'audio' ? 'audioGrid' : 'imageGrid';
+            const grid = document.getElementById(gridId);
+            const { data, error } = await supabase.from('media').select('*').eq('type', type);
+            if (error || !data || data.length === 0) {
+                grid.innerHTML = '<p style="color:var(--placeholder); text-align:center; padding:2rem;">No ' + type +
+                    's uploaded yet.</p>';
+                return;
+            }
+            grid.innerHTML = '';
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'media-item';
+                div.dataset.id = item.id;
+                const thumbContent = item.cover_url ? `<img src="${item.cover_url}" alt="${item.title}">` :
+                    `<i class="fas ${type === 'video' ? 'fa-play-circle' : type === 'audio' ? 'fa-music' : 'fa-image'}"></i>`;
+                const playOverlay = type === 'video' ? `<div class="play-overlay"><i class="fas fa-play-circle"></i></div>` :
+                    '';
+                div.innerHTML = `
+                        <div class="thumb">${thumbContent}${playOverlay}</div>
+                        <div class="info">
+                            <h4>${item.title}</h4>
+                            <div class="meta">
+                                <span><i class="fas fa-eye"></i> ${item.views || 0}</span>
+                                <span><i class="fas fa-heart"></i> ${item.likes || 0}</span>
+                            </div>
+                        </div>
+                        <button class="item-edit" onclick="event.stopPropagation(); editMediaItem('${item.id}')"><i class="fas fa-pen"></i></button>
+                        <button class="item-delete" onclick="event.stopPropagation(); deleteMediaItem('${item.id}')"><i class="fas fa-trash"></i></button>
+                    `;
+                if (isLoggedIn) {
+                    div.querySelector('.item-edit').classList.add('show');
+                    div.querySelector('.item-delete').classList.add('show');
+                }
+                div.addEventListener('click', function() {
+                    if (type === 'audio') {
+                        // Play audio with title display
+                        const audio = new Audio(item.file_url);
+                        audio.play();
+                        showToast('info', 'Now playing: ' + item.title);
+                    } else if (type === 'video') {
+                        // Open video in new tab or modal
+                        window.open(item.file_url, '_blank');
+                    } else {
+                        // Image preview
+                        window.open(item.file_url, '_blank');
+                    }
+                });
+                grid.appendChild(div);
+            });
+        }
+
+        async function editMediaItem(id) {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            const { data } = await supabase.from('media').select('title').eq('id', id).single();
+            if (!data) return;
+            const newTitle = prompt('Edit title:', data.title);
+            if (newTitle !== null && newTitle.trim() !== '') {
+                await supabase.from('media').update({ title: newTitle.trim() }).eq('id', id);
+                const { data: item } = await supabase.from('media').select('type').eq('id', id).single();
+                if (item) loadMedia(item.type);
+                showToast('success', 'Title updated successfully.');
+            }
+        }
+
+        async function deleteMediaItem(id) {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            if (!confirm('Delete this item?')) return;
+            const { data } = await supabase.from('media').select('type').eq('id', id).single();
+            await supabase.from('media').delete().eq('id', id);
+            if (data) loadMedia(data.type);
+            showToast('success', 'Media deleted successfully.');
+        }
+
+        // ============================================================
+        // ALBUMS
+        // ============================================================
+        let albumCoverFile = null;
+
+        async function loadAlbums() {
+            const grid = document.getElementById('albumGrid');
+            const { data, error } = await supabase.from('albums').select('*');
+            if (error || !data || data.length === 0) {
+                grid.innerHTML = '<p style="color:var(--placeholder); text-align:center; padding:2rem;">No albums yet.</p>';
+                return;
+            }
+            grid.innerHTML = '';
+            data.forEach(album => {
+                const div = document.createElement('div');
+                div.className = 'media-item';
+                const coverContent = album.cover_url ? `<img src="${album.cover_url}" alt="${album.title}">` :
+                    `<i class="fas fa-compact-disc"></i>`;
+                div.innerHTML = `
+                        <div class="thumb">${coverContent}</div>
+                        <div class="info">
+                            <h4>${album.title}</h4>
+                            <div class="meta">
+                                <span><i class="fas fa-music"></i> ${album.track_count || 0} tracks</span>
+                                <span>${album.year || ''}</span>
+                            </div>
+                        </div>
+                        <button class="item-edit" onclick="event.stopPropagation(); editAlbumItem('${album.id}')"><i class="fas fa-pen"></i></button>
+                        <button class="item-delete" onclick="event.stopPropagation(); deleteAlbumItem('${album.id}')"><i class="fas fa-trash"></i></button>
+                    `;
+                if (isLoggedIn) {
+                    div.querySelector('.item-edit').classList.add('show');
+                    div.querySelector('.item-delete').classList.add('show');
+                }
+                div.addEventListener('click', function() {
+                    // Show album details
+                    showToast('info', 'Album: ' + album.title + ' | ' + (album.track_count || 0) + ' tracks | ' + (
+                        album.year || ''));
+                });
+                grid.appendChild(div);
+            });
+        }
+
+        async function editAlbumItem(id) {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            const { data } = await supabase.from('albums').select('title').eq('id', id).single();
+            if (!data) return;
+            const newTitle = prompt('Edit album title:', data.title);
+            if (newTitle !== null && newTitle.trim() !== '') {
+                await supabase.from('albums').update({ title: newTitle.trim() }).eq('id', id);
+                loadAlbums();
+                showToast('success', 'Album updated successfully.');
+            }
+        }
+
+        async function deleteAlbumItem(id) {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            if (!confirm('Delete this album?')) return;
+            await supabase.from('albums').delete().eq('id', id);
+            loadAlbums();
+            showToast('success', 'Album deleted successfully.');
+        }
+
+        function handleAlbumCoverSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            albumCoverFile = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.getElementById('albumCoverPreview').style.display = 'block';
+                document.getElementById('albumCoverPreviewImg').src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ============================================================
+        // UPLOAD MODAL
+        // ============================================================
+        function openUploadModal() {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+            document.getElementById('uploadModal').classList.add('show');
+            setUploadType('video');
+            // Load albums into select
+            loadAlbumSelect();
+        }
+
+        async function loadAlbumSelect() {
+            const select = document.getElementById('uploadAlbumSelect');
+            const { data } = await supabase.from('albums').select('title');
+            select.innerHTML = '<option value="">Select album (optional)</option>';
+            if (data) {
+                data.forEach(album => {
+                    select.innerHTML += `<option value="${album.title}">${album.title}</option>`;
+                });
+            }
+            select.innerHTML += `<option value="new">+ Create New Album</option>`;
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('show');
+            document.getElementById('uploadTitle').value = '';
+            document.getElementById('mediaFileInput').value = '';
+            document.getElementById('coverFileInput').value = '';
+            document.getElementById('albumCoverInput').value = '';
+            document.getElementById('coverPreview').style.display = 'none';
+            document.getElementById('albumCoverPreview').style.display = 'none';
+            selectedFile = null;
+            selectedCover = null;
+            albumCoverFile = null;
+        }
+
+        function setUploadType(type) {
+            uploadType = type;
+            document.querySelectorAll('.upload-options button').forEach(b => b.classList.remove('active'));
+            if (type === 'video') {
+                document.getElementById('uploadVideoBtn').classList.add('active');
+                document.getElementById('mediaFileInput').accept = 'video/*';
+                document.getElementById('fileDropLabel').textContent = 'Click to upload video file (MP4, MOV)';
+                document.getElementById('albumSelectWrapper').style.display = 'none';
+                document.getElementById('coverWrapper').style.display = 'none';
+                document.getElementById('albumCoverWrapper').style.display = 'none';
+            } else if (type === 'audio') {
+                document.getElementById('uploadAudioBtn').classList.add('active');
+                document.getElementById('mediaFileInput').accept = 'audio/*';
+                document.getElementById('fileDropLabel').textContent = 'Click to upload audio file (MP3, WAV)';
+                document.getElementById('albumSelectWrapper').style.display = 'block';
+                document.getElementById('coverWrapper').style.display = 'block';
+                document.getElementById('albumCoverWrapper').style.display = 'none';
+            } else if (type === 'image') {
+                document.getElementById('uploadImageBtn').classList.add('active');
+                document.getElementById('mediaFileInput').accept = 'image/*';
+                document.getElementById('fileDropLabel').textContent = 'Click to upload image (JPG, PNG)';
+                document.getElementById('albumSelectWrapper').style.display = 'none';
+                document.getElementById('coverWrapper').style.display = 'none';
+                document.getElementById('albumCoverWrapper').style.display = 'none';
+            } else if (type === 'album') {
+                document.getElementById('uploadAlbumBtn').classList.add('active');
+                document.getElementById('mediaFileInput').accept = 'image/*';
+                document.getElementById('fileDropLabel').textContent = 'Click to upload album cover image';
+                document.getElementById('albumSelectWrapper').style.display = 'block';
+                document.getElementById('coverWrapper').style.display = 'none';
+                document.getElementById('albumCoverWrapper').style.display = 'block';
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedFile = file;
+            document.getElementById('fileDropLabel').textContent = file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) +
+                ' MB)';
+        }
+
+        function handleCoverSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedCover = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.getElementById('coverPreview').style.display = 'block';
+                document.getElementById('coverPreviewImg').src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('uploadAlbumSelect')?.addEventListener('change', function() {
+            const newAlbumInput = document.getElementById('newAlbumName');
+            const albumCoverWrapper = document.getElementById('albumCoverWrapper');
+            if (this.value === 'new') {
+                newAlbumInput.style.display = 'block';
+                albumCoverWrapper.style.display = 'block';
+            } else {
+                newAlbumInput.style.display = 'none';
+                albumCoverWrapper.style.display = 'none';
+            }
+        });
+
+        async function performUpload() {
+            if (!isLoggedIn) {
+                showToast('error', 'Please login first.');
+                return;
+            }
+
+            if (uploadType === 'album') {
+                // Handle album upload
+                const title = document.getElementById('uploadTitle').value.trim();
+                if (!title) {
+                    showToast('error', 'Please enter an album title.');
+                    return;
+                }
+                if (!selectedFile) {
+                    showToast('error', 'Please select an album cover image.');
+                    return;
+                }
+
+                try {
+                    // Upload album cover
+                    const coverExt = selectedFile.name.split('.').pop();
+                    const coverName = `album_${Date.now()}.${coverExt}`;
+                    const { data: coverData, error: coverError } = await supabase.storage.from('media').upload(coverName,
+                        selectedFile);
+                    if (coverError) {
+                        showToast('error', 'Cover upload failed: ' + coverError.message);
+                        return;
+                    }
+                    const { data: coverUrlData } = supabase.storage.from('media').getPublicUrl(coverName);
+                    const coverUrl = coverUrlData.publicUrl;
+
+                    const { error: insertError } = await supabase.from('albums').insert({
+                        title: title,
+                        year: '2026',
+                        track_count: 0,
+                        cover_url: coverUrl
+                    });
+
+                    if (insertError) {
+                        showToast('error', 'Save failed: ' + insertError.message);
+                        return;
+                    }
+
+                    showToast('success', 'Album created successfully!');
+                    closeUploadModal();
+                    loadAlbums();
+                } catch (err) {
+                    showToast('error', 'Error: ' + err.message);
+                }
+                return;
+            }
+
+            // Handle media upload (video, audio, image)
+            const title = document.getElementById('uploadTitle').value.trim();
+            if (!title) {
+                showToast('error', 'Please enter a title.');
+                return;
+            }
+            if (!selectedFile) {
+                showToast('error', 'Please select a file to upload.');
+                return;
+            }
+
+            try {
+                const fileExt = selectedFile.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+                const { data: uploadData, error: uploadError } = await supabase.storage.from('media').upload(fileName,
+                    selectedFile);
+                if (uploadError) {
+                    showToast('error', 'Upload failed: ' + uploadError.message);
+                    return;
+                }
+
+                const { data: urlData } = supabase.storage.from('media').getPublicUrl(fileName);
+                const fileUrl = urlData.publicUrl;
+
+                let coverUrl = null;
+                if (selectedCover) {
+                    const coverExt = selectedCover.name.split('.').pop();
+                    const coverName = `cover_${Date.now()}.${coverExt}`;
+                    const { data: coverData, error: coverError } = await supabase.storage.from('media').upload(coverName,
+                        selectedCover);
+                    if (!coverError) {
+                        const { data: coverUrlData } = supabase.storage.from('media').getPublicUrl(coverName);
+                        coverUrl = coverUrlData.publicUrl;
+                    }
+                }
+
+                const albumName = document.getElementById('uploadAlbumSelect')?.value;
+                const insertData = {
+                    title: title,
+                    type: uploadType,
+                    file_url: fileUrl,
+                    cover_url: coverUrl,
+                    views: 0,
+                    likes: 0
+                };
+
+                if (albumName && albumName !== 'new' && albumName !== '') {
+                    insertData.album = albumName;
+                }
+
+                const { error: insertError } = await supabase.from('media').insert(insertData);
+
+                if (insertError) {
+                    showToast('error', 'Save failed: ' + insertError.message);
+                    return;
+                }
+
+                showToast('success', 'Uploaded successfully!');
+                closeUploadModal();
+                loadMedia(uploadType);
+                document.getElementById('uploadTitle').value = '';
+                document.getElementById('mediaFileInput').value = '';
+                document.getElementById('coverFileInput').value = '';
+                document.getElementById('coverPreview').style.display = 'none';
+                selectedFile = null;
+                selectedCover = null;
+            } catch (err) {
+                showToast('error', 'Error: ' + err.message);
+            }
+        }
+
+        // ============================================================
+        // TAB SWITCHING
+        // ============================================================
+        document.querySelectorAll('.nav-bar a').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-bar a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                const tabName = this.dataset.tab;
+                document.getElementById('homeSection').style.display = 'none';
+                document.getElementById('videoGrid').style.display = 'none';
+                document.getElementById('audioGrid').style.display = 'none';
+                document.getElementById('imageGrid').style.display = 'none';
+                document.getElementById('albumGrid').style.display = 'none';
+                if (tabName === 'home') {
+                    document.getElementById('homeSection').style.display = 'block';
+                } else if (tabName === 'videos') {
+                    document.getElementById('videoGrid').style.display = 'grid';
+                } else if (tabName === 'audio') {
+                    document.getElementById('audioGrid').style.display = 'grid';
+                } else if (tabName === 'images') {
+                    document.getElementById('imageGrid').style.display = 'grid';
+                } else if (tabName === 'albums') {
+                    document.getElementById('albumGrid').style.display = 'grid';
+                }
+            });
+        });
+
+        // ============================================================
+        // CLOSE MODALS ON OUTSIDE CLICK
+        // ============================================================
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('show');
+                }
+            });
+        });
+
+        // ============================================================
+        // CHECK AUTH ON LOAD
+        // ============================================================
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                isLoggedIn = true;
+                updateUI();
+                loadAllData();
+            } else {
+                updateUI();
+                loadAllData();
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        checkAuth();
+
+        setInterval(() => {
+            if (document.getElementById('homeSection').style.display !== 'none') {
+                loadPosts();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
