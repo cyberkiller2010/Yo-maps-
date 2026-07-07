@@ -1184,7 +1184,7 @@
                         <a href="#" onclick="showForgotPassword()" style="color: var(--purple); font-size: 0.85rem;">
                             <i class="fas fa-key"></i> Forgot password?
                         </a>
-                        <a href="#" onclick="switchToSignup()" style="color: var(--purple); font-size: 0.85rem;">
+                        <a href="#" onclick="switchToSignup()" style="color: var(--purple); font-size: 0.85rem; display:none;" id="signupLink">
                             <i class="fas fa-user-plus"></i> Don't have an account? Sign up
                         </a>
                     </div>
@@ -1244,6 +1244,7 @@
         const ARTIST_EMAIL = 'mundiamartin293@gmail.com';
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+        let signupDisabled = false;
 
         // ============================================================
         // STATE
@@ -1258,7 +1259,7 @@
         let postFileType = null;
 
         // ============================================================
-        // TOAST NOTIFICATIONS (No Emojis)
+        // TOAST NOTIFICATIONS
         // ============================================================
         function showToast(type, message) {
             const container = document.getElementById('toastContainer');
@@ -1282,6 +1283,12 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
 
+            // 🔒 BLOCK: Only allow artist email to login
+            if (email !== ARTIST_EMAIL) {
+                showToast('error', 'Only the artist account can login.');
+                return;
+            }
+
             if (!email || !password) {
                 showToast('error', 'Please enter both email and password.');
                 return;
@@ -1303,6 +1310,12 @@
         async function signup() {
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
+
+            // 🔒 BLOCK: Only allow artist email to sign up
+            if (email !== ARTIST_EMAIL) {
+                showToast('error', 'Only the artist account can sign up.');
+                return;
+            }
 
             if (!email || !password) {
                 showToast('error', 'Please enter both email and password.');
@@ -1335,6 +1348,8 @@
 
             showToast('success', 'Account created successfully! Please login.');
             switchToLogin();
+            // After signup, disable signup link
+            document.getElementById('signupLink').style.display = 'none';
         }
 
         async function logout() {
@@ -1357,6 +1372,13 @@
 
         async function resetPassword() {
             const email = document.getElementById('resetEmail').value.trim();
+
+            // 🔒 BLOCK: Only allow artist email to reset password
+            if (email !== ARTIST_EMAIL) {
+                showToast('error', 'This email is not the artist account.');
+                return;
+            }
+
             if (!email) {
                 showToast('error', 'Please enter your email address.');
                 return;
@@ -1456,7 +1478,7 @@
         function updateUI() {
             const isArtist = isLoggedIn && currentUser && currentUser.email === ARTIST_EMAIL;
 
-            if (isLoggedIn && currentUser) {
+            if (isLoggedIn && currentUser && isArtist) {
                 document.getElementById('loginBtn').style.display = 'none';
                 document.getElementById('logoutBtn').style.display = 'flex';
                 document.getElementById('userStatus').style.display = 'inline-block';
@@ -1489,9 +1511,12 @@
         async function checkIfSignupDisabled() {
             const { data } = await supabase.from('profiles').select('id').limit(1);
             const hasUser = data && data.length > 0;
-            const signupLink = document.querySelector('a[onclick="switchToSignup()"]');
+            const signupLink = document.getElementById('signupLink');
             if (signupLink) {
                 signupLink.style.display = hasUser ? 'none' : 'inline';
+            }
+            if (hasUser) {
+                signupDisabled = true;
             }
         }
 
@@ -1804,15 +1829,12 @@
                 }
                 div.addEventListener('click', function() {
                     if (type === 'audio') {
-                        // Play audio with title display
                         const audio = new Audio(item.file_url);
                         audio.play();
                         showToast('info', 'Now playing: ' + item.title);
                     } else if (type === 'video') {
-                        // Open video in new tab or modal
                         window.open(item.file_url, '_blank');
                     } else {
-                        // Image preview
                         window.open(item.file_url, '_blank');
                     }
                 });
@@ -1883,7 +1905,6 @@
                     div.querySelector('.item-delete').classList.add('show');
                 }
                 div.addEventListener('click', function() {
-                    // Show album details
                     showToast('info', 'Album: ' + album.title + ' | ' + (album.track_count || 0) + ' tracks | ' + (
                         album.year || ''));
                 });
@@ -1939,7 +1960,6 @@
             }
             document.getElementById('uploadModal').classList.add('show');
             setUploadType('video');
-            // Load albums into select
             loadAlbumSelect();
         }
 
@@ -2041,7 +2061,6 @@
             }
 
             if (uploadType === 'album') {
-                // Handle album upload
                 const title = document.getElementById('uploadTitle').value.trim();
                 if (!title) {
                     showToast('error', 'Please enter an album title.');
@@ -2053,7 +2072,6 @@
                 }
 
                 try {
-                    // Upload album cover
                     const coverExt = selectedFile.name.split('.').pop();
                     const coverName = `album_${Date.now()}.${coverExt}`;
                     const { data: coverData, error: coverError } = await supabase.storage.from('media').upload(coverName,
@@ -2086,7 +2104,6 @@
                 return;
             }
 
-            // Handle media upload (video, audio, image)
             const title = document.getElementById('uploadTitle').value.trim();
             if (!title) {
                 showToast('error', 'Please enter a title.');
